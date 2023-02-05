@@ -1,9 +1,9 @@
 # rust 中一些常用工具
 
-[![Linter Status](https://github.com/yansongda/rust-utils/workflows/linter/badge.svg)](https://github.com/yansongda/rust-utils/actions)
-[![Tests Status](https://github.com/yansongda/rust-utils/workflows/tests/badge.svg)](https://github.com/yansongda/rust-utils/actions)
+[![linter Status](https://github.com/yansongda/rust-utils/workflows/linter/badge.svg)](https://github.com/yansongda/rust-utils/actions)
+[![tests Status](https://github.com/yansongda/rust-utils/workflows/tests/badge.svg)](https://github.com/yansongda/rust-utils/actions)
 [![doc.rs](https://docs.rs/yansongda-utils/badge.svg)](https://docs.rs/yansongda-utils/)
-[![doc.rs](https://img.shields.io/crates/v/yansongda-utils)](https://docs.rs/yansongda-utils/)
+[![crates.io](https://img.shields.io/crates/v/yansongda-utils)](https://crates.io/crates/yansongda-utils)
 
 ## 安装
 
