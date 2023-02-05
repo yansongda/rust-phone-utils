@@ -10,8 +10,8 @@ env:
   CARGO_TOKEN: ${{ secrets.CARGO_TOKEN }}
 
 jobs:
-  test:
-    name: Test Suite
+  publish:
+    name: Publish
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources
@@ -22,12 +22,5 @@ jobs:
           profile: minimal
           toolchain: stable
           override: true
-      - name: Login cargo.io
-        uses: actions-rs/cargo@v1
-        with:
-          command: login
-          args: $CARGO_TOKEN
       - name: Publish
-        uses: actions-rs/cargo@v1
-        with:
-          command: publish
+        run: cargo publish --token $CARGO_TOKEN
