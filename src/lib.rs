@@ -19,7 +19,7 @@ pub mod phone;
 
 #[cfg(feature = "once_cell")]
 pub use once_cell;
-#[cfg(feature = "serde")]
-pub use serde;
 #[cfg(feature = "regex")]
 pub use regex as regex_crate;
+#[cfg(feature = "serde")]
+pub use serde;
