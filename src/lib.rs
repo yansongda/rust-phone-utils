@@ -3,5 +3,7 @@
 //! # Phone
 //! 电话号码相关的工具函数
 
-pub mod phone;
+#![forbid(unsafe_code)]
+
 pub mod macros;
+pub mod phone;

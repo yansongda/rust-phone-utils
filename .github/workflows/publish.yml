@@ -1,0 +1,33 @@
+name: publish
+
+on:
+  push:
+    tags:
+      - v*
+
+env:
+  CARGO_TERM_COLOR: always
+  CARGO_TOKEN: ${{ secrets.CARGO_TOKEN }}
+
+jobs:
+  test:
+    name: Test Suite
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v3
+      - name: Install stable toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+      - name: Login cargo.io
+        uses: actions-rs/cargo@v1
+        with:
+          command: login
+          args: $CARGO_TOKEN
+      - name: Publish
+        uses: actions-rs/cargo@v1
+        with:
+          command: publish

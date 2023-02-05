@@ -18,9 +18,9 @@
 use std::fmt::Formatter;
 use std::str::FromStr;
 
-use serde::{Deserialize, Deserializer, Serialize, Serializer};
-use serde::de::{Error, Visitor};
 use crate::regex;
+use serde::de::{Error, Visitor};
+use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
 /// 电话类型
 #[derive(Eq, PartialEq, Clone, Debug)]
@@ -68,7 +68,10 @@ impl From<PhoneType> for String {
 }
 
 impl Serialize for PhoneType {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error> where S: Serializer {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
         let str = self.to_string();
 
         serializer.serialize_str(&str[..])
@@ -84,17 +87,26 @@ impl<'de> Visitor<'de> for PhoneTypeVisitor {
         formatter.write_str("反序列化失败，值应该为 string/str.")
     }
 
-    fn visit_str<E>(self, v: &str) -> Result<Self::Value, E> where E: Error {
+    fn visit_str<E>(self, v: &str) -> Result<Self::Value, E>
+    where
+        E: Error,
+    {
         Ok(v.to_owned().into())
     }
 
-    fn visit_string<E>(self, v: String) -> Result<Self::Value, E> where E: Error {
+    fn visit_string<E>(self, v: String) -> Result<Self::Value, E>
+    where
+        E: Error,
+    {
         Ok(v.into())
     }
 }
 
 impl<'de> Deserialize<'de> for PhoneType {
-    fn deserialize<D>(deserializer: D) -> Result<PhoneType, D::Error> where D: Deserializer<'de> {
+    fn deserialize<D>(deserializer: D) -> Result<PhoneType, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
         deserializer.deserialize_any(PhoneTypeVisitor)
     }
 }
@@ -145,7 +157,10 @@ impl From<MobileVendor> for String {
 }
 
 impl Serialize for MobileVendor {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error> where S: Serializer {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
         let str = self.to_string();
 
         serializer.serialize_str(&str[..])
@@ -161,17 +176,26 @@ impl<'de> Visitor<'de> for MobileVendorVisitor {
         formatter.write_str("反序列化失败，值应该为 string/str.")
     }
 
-    fn visit_str<E>(self, v: &str) -> Result<Self::Value, E> where E: Error {
+    fn visit_str<E>(self, v: &str) -> Result<Self::Value, E>
+    where
+        E: Error,
+    {
         Ok(v.to_owned().into())
     }
 
-    fn visit_string<E>(self, v: String) -> Result<Self::Value, E> where E: Error {
+    fn visit_string<E>(self, v: String) -> Result<Self::Value, E>
+    where
+        E: Error,
+    {
         Ok(v.into())
     }
 }
 
 impl<'de> Deserialize<'de> for MobileVendor {
-    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error> where D: Deserializer<'de> {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
         deserializer.deserialize_any(MobileVendorVisitor)
     }
 }
@@ -198,8 +222,7 @@ pub fn is_idd(number: &str) -> bool {
 
 /// 给定的号码是否是正常的电话号码
 pub fn is_phone(number: &str) -> bool {
-    is_mobile(number) || is_telephone(number) ||
-        is_service(number) || is_idd(number)
+    is_mobile(number) || is_telephone(number) || is_service(number) || is_idd(number)
 }
 
 /// 将号码转换为中国标准格式，即不带 +、+86、86、0 等形式
@@ -242,7 +265,6 @@ pub fn get_segment(number: &str) -> (PhoneType, &str) {
 
     (PhoneType::Tel, &number[..4])
 }
-
 
 #[cfg(test)]
 mod tests {
