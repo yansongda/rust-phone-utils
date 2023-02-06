@@ -15,6 +15,9 @@ regex = { version = "~1.7.0", optional = true }
 serde = { version = "~1.0.130", features = ["derive"], optional = true }
 once_cell = { version = "~1.17.0", optional = true }
 
+[dev-dependencies]
+serde_json = { version = "~1.0.92" }
+
 [features]
 macros = ["regex", "once_cell"]
 phone = ["macros", "serde"]

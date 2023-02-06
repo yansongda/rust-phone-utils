@@ -51,11 +51,11 @@ impl ToString for PhoneType {
 
 impl From<String> for PhoneType {
     fn from(v: String) -> Self {
-        match v.as_str() {
-            "TEL" | "Tel" => PhoneType::Tel,
-            "MOBILE" | "Mobile" => PhoneType::Mobile,
-            "IDD" | "Idd" => PhoneType::Idd,
-            "SERVICE" | "Service" => PhoneType::Service,
+        match v.to_lowercase().as_str() {
+            "tel" => PhoneType::Tel,
+            "mobile" => PhoneType::Mobile,
+            "idd" => PhoneType::Idd,
+            "service" => PhoneType::Service,
             _s => PhoneType::Others,
         }
     }
@@ -112,7 +112,7 @@ impl<'de> Deserialize<'de> for PhoneType {
 }
 
 /// 电话运营商
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum MobileVendor {
     /// 中国移动
     Mobile,
@@ -140,11 +140,11 @@ impl ToString for MobileVendor {
 
 impl From<String> for MobileVendor {
     fn from(v: String) -> Self {
-        match v.as_str() {
-            "10010 联通" | "10010" => MobileVendor::Unicom,
-            "10000 电信" | "10000" => MobileVendor::Telecom,
-            "10086 移动" | "10086" => MobileVendor::Mobile,
-            "10099 广电" | "10099" => MobileVendor::Cbn,
+        match v.to_lowercase().as_str() {
+            "10010 联通" | "10010" | "unicom" => MobileVendor::Unicom,
+            "10000 电信" | "10000" | "telecom" => MobileVendor::Telecom,
+            "10086 移动" | "10086" | "mobile" => MobileVendor::Mobile,
+            "10099 广电" | "10099" | "cbn" => MobileVendor::Cbn,
             _s => MobileVendor::Others,
         }
     }
@@ -269,6 +269,56 @@ pub fn get_segment(number: &str) -> (PhoneType, &str) {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn test_phone_type_string() {
+        assert_eq!(PhoneType::Mobile.to_string(), "MOBILE");
+        assert_eq!(PhoneType::Tel.to_string(), "TEL");
+        assert_eq!(PhoneType::Service.to_string(), "SERVICE");
+        assert_eq!(PhoneType::Idd.to_string(), "IDD");
+
+        assert_eq!(PhoneType::Mobile, "MOBILE".to_string().into());
+        assert_eq!(PhoneType::Tel, "TeL".to_string().into());
+        assert_eq!(PhoneType::Service, "SERViCE".to_string().into());
+        assert_eq!(PhoneType::Idd, "IDD".to_string().into());
+    }
+
+    #[test]
+    fn test_phone_type_json() {
+        assert_eq!(PhoneType::Mobile, serde_json::from_str("\"MOBILE\"").unwrap());
+        assert_eq!(PhoneType::Tel, serde_json::from_str("\"TeL\"").unwrap());
+        assert_eq!(PhoneType::Service, serde_json::from_str("\"SERViCE\"").unwrap());
+        assert_eq!(PhoneType::Idd, serde_json::from_str("\"IDD\"").unwrap());
+    }
+
+    #[test]
+    fn test_mobile_vendor_string() {
+        assert_eq!(MobileVendor::Mobile.to_string(), "10086 移动");
+        assert_eq!(MobileVendor::Unicom.to_string(), "10010 联通");
+        assert_eq!(MobileVendor::Telecom.to_string(), "10000 电信");
+        assert_eq!(MobileVendor::Cbn.to_string(), "10099 广电");
+
+        assert_eq!(MobileVendor::Mobile, "10086 移动".to_string().into());
+        assert_eq!(MobileVendor::Mobile, "mObIle".to_string().into());
+        assert_eq!(MobileVendor::Unicom, "10010 联通".to_string().into());
+        assert_eq!(MobileVendor::Unicom, "10010".to_string().into());
+        assert_eq!(MobileVendor::Telecom, "10000 电信".to_string().into());
+        assert_eq!(MobileVendor::Telecom, "telecom".to_string().into());
+        assert_eq!(MobileVendor::Cbn, "10099 广电".to_string().into());
+        assert_eq!(MobileVendor::Cbn, "cbn".to_string().into());
+    }
+
+    #[test]
+    fn test_mobile_vendor_json() {
+        assert_eq!(MobileVendor::Mobile, serde_json::from_str("\"10086 移动\"").unwrap());
+        assert_eq!(MobileVendor::Mobile, serde_json::from_str("\"mObIle\"").unwrap());
+        assert_eq!(MobileVendor::Unicom, serde_json::from_str("\"10010 联通\"").unwrap());
+        assert_eq!(MobileVendor::Unicom, serde_json::from_str("\"10010\"").unwrap());
+        assert_eq!(MobileVendor::Telecom, serde_json::from_str("\"10000 电信\"").unwrap());
+        assert_eq!(MobileVendor::Telecom, serde_json::from_str("\"telecom\"").unwrap());
+        assert_eq!(MobileVendor::Cbn, serde_json::from_str("\"10099 广电\"").unwrap());
+        assert_eq!(MobileVendor::Cbn, serde_json::from_str("\"cbn\"").unwrap());
+    }
 
     #[test]
     fn test_is_mobile() {
