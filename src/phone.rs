@@ -272,10 +272,10 @@ mod tests {
 
     #[test]
     fn test_phone_type_string() {
-        assert_eq!(PhoneType::Mobile.to_string(), "MOBILE");
-        assert_eq!(PhoneType::Tel.to_string(), "TEL");
-        assert_eq!(PhoneType::Service.to_string(), "SERVICE");
-        assert_eq!(PhoneType::Idd.to_string(), "IDD");
+        assert_eq!("MOBILE", PhoneType::Mobile.to_string());
+        assert_eq!("TEL", PhoneType::Tel.to_string());
+        assert_eq!("SERVICE", PhoneType::Service.to_string());
+        assert_eq!("IDD", PhoneType::Idd.to_string());
 
         assert_eq!(PhoneType::Mobile, "MOBILE".to_string().into());
         assert_eq!(PhoneType::Tel, "TeL".to_string().into());
@@ -299,10 +299,10 @@ mod tests {
 
     #[test]
     fn test_mobile_vendor_string() {
-        assert_eq!(MobileVendor::Mobile.to_string(), "10086 移动");
-        assert_eq!(MobileVendor::Unicom.to_string(), "10010 联通");
-        assert_eq!(MobileVendor::Telecom.to_string(), "10000 电信");
-        assert_eq!(MobileVendor::Cbn.to_string(), "10099 广电");
+        assert_eq!("10086 移动", MobileVendor::Mobile.to_string());
+        assert_eq!("10010 联通", MobileVendor::Unicom.to_string());
+        assert_eq!("10000 电信", MobileVendor::Telecom.to_string());
+        assert_eq!("10099 广电", MobileVendor::Cbn.to_string());
 
         assert_eq!(MobileVendor::Mobile, "10086 移动".to_string().into());
         assert_eq!(MobileVendor::Mobile, "mObIle".to_string().into());
@@ -391,5 +391,33 @@ mod tests {
         assert!(is_phone("95588"));
         assert!(is_phone("0012345678"));
         assert!(is_phone("008512345678"));
+    }
+
+    #[test]
+    fn test_to_standard_format() {
+        assert_eq!("13800138000", to_standard_format("13800138000"));
+        assert_eq!("13800138000", to_standard_format("013800138000"),);
+        assert_eq!("13800138000", to_standard_format("+8613800138000"));
+        assert_eq!("13800138000", to_standard_format("+86013800138000"));
+        assert_eq!("01012345678", to_standard_format("01012345678"));
+        assert_eq!("01012345678-1234", to_standard_format("01012345678-1234"));
+        assert_eq!("01012345678,1234", to_standard_format("01012345678,1234"));
+        assert_eq!("075512345678", to_standard_format("075512345678"));
+        assert_eq!("075512345678-1234", to_standard_format("075512345678-1234"));
+        assert_eq!("075512345678,1234", to_standard_format("075512345678,1234"));
+        assert_eq!("10000000", to_standard_format("10000000"));
+        assert_eq!("10086", to_standard_format("10086"));
+        assert_eq!("95588", to_standard_format("95588"));
+        assert_eq!("008512345678", to_standard_format("008512345678"));
+    }
+
+    #[test]
+    fn test_get_segment() {
+        assert_eq!((PhoneType::Mobile, "1380013"), get_segment("13800138000"));
+        assert_eq!((PhoneType::Idd, "8512"), get_segment("008512345678"));
+        assert_eq!((PhoneType::Service, "10086"), get_segment("10086"));
+        assert_eq!((PhoneType::Tel, "010"), get_segment("01012345678"));
+        assert_eq!((PhoneType::Tel, "027"), get_segment("02712345678"));
+        assert_eq!((PhoneType::Tel, "0755"), get_segment("075512345678"));
     }
 }
