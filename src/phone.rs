@@ -285,9 +285,15 @@ mod tests {
 
     #[test]
     fn test_phone_type_json() {
-        assert_eq!(PhoneType::Mobile, serde_json::from_str("\"MOBILE\"").unwrap());
+        assert_eq!(
+            PhoneType::Mobile,
+            serde_json::from_str("\"MOBILE\"").unwrap()
+        );
         assert_eq!(PhoneType::Tel, serde_json::from_str("\"TeL\"").unwrap());
-        assert_eq!(PhoneType::Service, serde_json::from_str("\"SERViCE\"").unwrap());
+        assert_eq!(
+            PhoneType::Service,
+            serde_json::from_str("\"SERViCE\"").unwrap()
+        );
         assert_eq!(PhoneType::Idd, serde_json::from_str("\"IDD\"").unwrap());
     }
 
@@ -310,13 +316,34 @@ mod tests {
 
     #[test]
     fn test_mobile_vendor_json() {
-        assert_eq!(MobileVendor::Mobile, serde_json::from_str("\"10086 移动\"").unwrap());
-        assert_eq!(MobileVendor::Mobile, serde_json::from_str("\"mObIle\"").unwrap());
-        assert_eq!(MobileVendor::Unicom, serde_json::from_str("\"10010 联通\"").unwrap());
-        assert_eq!(MobileVendor::Unicom, serde_json::from_str("\"10010\"").unwrap());
-        assert_eq!(MobileVendor::Telecom, serde_json::from_str("\"10000 电信\"").unwrap());
-        assert_eq!(MobileVendor::Telecom, serde_json::from_str("\"telecom\"").unwrap());
-        assert_eq!(MobileVendor::Cbn, serde_json::from_str("\"10099 广电\"").unwrap());
+        assert_eq!(
+            MobileVendor::Mobile,
+            serde_json::from_str("\"10086 移动\"").unwrap()
+        );
+        assert_eq!(
+            MobileVendor::Mobile,
+            serde_json::from_str("\"mObIle\"").unwrap()
+        );
+        assert_eq!(
+            MobileVendor::Unicom,
+            serde_json::from_str("\"10010 联通\"").unwrap()
+        );
+        assert_eq!(
+            MobileVendor::Unicom,
+            serde_json::from_str("\"10010\"").unwrap()
+        );
+        assert_eq!(
+            MobileVendor::Telecom,
+            serde_json::from_str("\"10000 电信\"").unwrap()
+        );
+        assert_eq!(
+            MobileVendor::Telecom,
+            serde_json::from_str("\"telecom\"").unwrap()
+        );
+        assert_eq!(
+            MobileVendor::Cbn,
+            serde_json::from_str("\"10099 广电\"").unwrap()
+        );
         assert_eq!(MobileVendor::Cbn, serde_json::from_str("\"cbn\"").unwrap());
     }
 
