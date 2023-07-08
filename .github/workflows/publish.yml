@@ -20,6 +20,9 @@ jobs:
         uses: dtolnay/rust-toolchain@master
         with:
           toolchain: stable
+      - name: Cargo generate lockfile
+        run: |
+          cargo generate-lockfile
       - name: Cache crates
         uses: actions/cache@v3
         with:
