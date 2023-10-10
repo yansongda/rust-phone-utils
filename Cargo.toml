@@ -11,11 +11,11 @@ repository = "https://github.com/yansongda/rust-utils"
 features = ["macros", "phone"]
 
 [dependencies]
-regex = { version = "~1.9.0", optional = true }
+regex = { version = "~1.10.0", optional = true }
 serde = { version = "~1.0.130", features = ["derive"], optional = true }
 
 [dev-dependencies]
-regex = { version = "~1.9.0" }
+regex = { version = "~1.10.0" }
 serde_json = { version = "~1.0.92" }
 
 [features]
